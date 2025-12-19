@@ -55,55 +55,9 @@ namespace Parcial2 {
       //Obtener objeto de usuario desde evento
       usuario = e.User;
 
-      MenuInicioForm menuInicioForm = new MenuInicioForm(usuario);
-      RenderizarForm(menuInicioForm);
-      menuInicioForm.SolicitarCambio += MenuInicioHandler;
-    }
-
-    //Renderizar CuentaSeleccionada
-    private void MenuInicioHandler(object sender, UsuarioEventArgs e) { 
-      usuario = e.User;
-
-      //Refetchear datos de usuario
-
-      //Renderizar siguiente Forms
-      CuentaForm cuentaForm = new CuentaForm(usuario);
-      RenderizarForm(cuentaForm);
-      cuentaForm.SolicitarCambioCerrarSesion += CerrarSesionHandler;
-      cuentaForm.SolicitarCambioMenuInicio += InicioSesionHandler;
-      cuentaForm.SolicitarCambioVerTransacciones += VerTransaccionesHandler;
-      cuentaForm.SolicitarCambioRealizarTransacciones += RealizarTransaccionHandler;
-    }
-
-    //Volver a InicioSesión
-    private void CerrarSesionHandler(object sender, EventArgs e) {
-      usuario = null;
-      indiceCuentaSeleccionada = -1;
-
-      InicioSesionForm inicioSesionForm = new InicioSesionForm();
-      RenderizarForm(inicioSesionForm);
-
-      inicioSesionForm.SolicitarCambio += InicioSesionHandler;
-    }
-
-    //Renderizar VerTransacciones
-    private void VerTransaccionesHandler(object sender, EventArgs e) {
-      //Refrescar, para ver nuevas transacciones
-
-      //refrescarTransacciones(To-Do)
-
-      VerTransaccionesForm verTransaccionesForm = new VerTransaccionesForm(usuario!);
-      RenderizarForm(verTransaccionesForm);
-      verTransaccionesForm.SolicitarCambioMenuCuenta += MenuInicioHandler;
-    }
-
-    private void RealizarTransaccionHandler(object sender, EventArgs e) {
-      //Refrescar, para ver saldo actual
-
-      RealizarTransaccionForm realizarTransaccionForm = new RealizarTransaccionForm(usuario);
-      RenderizarForm(realizarTransaccionForm);
-
-      realizarTransaccionForm.SolicitarCambioMenuCuenta += MenuInicioHandler;
+      //MenuInicioForm menuInicioForm = new MenuInicioForm(usuario);
+      //renderizarForm(menuInicioForm);
+      //menuInicioForm.SolicitarCambio += MenuInicioHandler;
     }
   }
 }
