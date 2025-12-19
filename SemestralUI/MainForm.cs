@@ -17,10 +17,12 @@ namespace Parcial2 {
       InicioSesionForm inicioSesionForm = new InicioSesionForm();
       RenderizarForm(inicioSesionForm);
 
+      //Linkear el atributo "Event SolicitarCambio" para que, cuando se triggere con un botón
+      //dentro de inicioSesionForm... se ejecute la función Handler en ESTA CLASE (MainForm/Renderizador).
       inicioSesionForm.SolicitarCambio += InicioSesionHandler!;
     }
 
-    //Renderiza formARenderizar en panel
+    //Renderiza formARenderizar en pantalla
     private void RenderizarForm(Form formARenderizar) {
 
       //Permite que la Form a renderizar llene el panel
@@ -50,14 +52,14 @@ namespace Parcial2 {
       formARenderizar.Show();
     }
 
-    //Renderizar Menu Elegir Cuenta
+    //Al hacer click en "Iniciar Sesión", en InicioSesionForm, renderizar Menú Inicial  
     private void InicioSesionHandler(object sender, UsuarioEventArgs e) {
-      //Obtener objeto de usuario desde evento
+      //Obtener objeto de usuario desde evento el evento
       usuario = e.User;
 
-      //MenuInicioForm menuInicioForm = new MenuInicioForm(usuario);
-      //renderizarForm(menuInicioForm);
-      //menuInicioForm.SolicitarCambio += MenuInicioHandler;
+      MenuInicioForm menuInicioForm = new MenuInicioForm(usuario);
+      RenderizarForm(menuInicioForm);
+      menuInicioForm.SolicitarCambio += MenuInicioHandler;
     }
   }
 }
