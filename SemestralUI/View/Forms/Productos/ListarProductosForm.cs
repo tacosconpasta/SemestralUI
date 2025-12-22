@@ -32,6 +32,29 @@ namespace SemestralUI.View.Forms {
         //Limpiar artículos de render previo
         articulosListContainer.Controls.Clear();
 
+        //ENCABEZADO
+        var encabezado = new ArticuloRenderControl(
+            new Articulo { Nombre = "Nombre", Precio = 0 },
+            new List<Categoria> { new Categoria { Nombre = "Categorías" } }
+        ) {
+          AutoSize = true
+        };
+
+        //Reemplazar precio (que es forzado a int, por un string directamente en el label)
+        encabezado.lblPrecio.Text = "Precio";
+
+
+        // Ocultar botones de acciones
+        encabezado.btnEditar.Visible = false;
+        encabezado.btnEliminar.Visible = false;
+
+        // Opcional: cambiar estilo de labels para que parezca encabezado
+        encabezado.lblNombre.Font = new Font(encabezado.lblNombre.Font, FontStyle.Bold);
+        encabezado.lblPrecio.Font = new Font(encabezado.lblPrecio.Font, FontStyle.Bold);
+        encabezado.lblCategorias.Font = new Font(encabezado.lblCategorias.Font, FontStyle.Bold);
+
+        articulosListContainer.Controls.Add(encabezado);
+
         //Obtener artículos
         var response = await _http.GetAsync($"{API_BASE}/articulos");
         response.EnsureSuccessStatusCode();

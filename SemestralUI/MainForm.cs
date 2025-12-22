@@ -4,6 +4,8 @@ using SemestralUI.Models.Events;
 using SemestralUI.View.Controls;
 using SemestralUI.View.Forms;
 using SemestralUI.View.Forms.Categorias;
+using SemestralUI.View.Forms.Facturas;
+using SemestralUI.View.Forms.Ordenes;
 using SemestralUI.View.Forms.Productos;
 
 namespace Parcial2 {
@@ -134,7 +136,7 @@ namespace Parcial2 {
 
         //Indice 0: listado de productos
         case 0: {
-            var listarArticulosForm = new ListarProductosForm();
+            ListarProductosForm listarArticulosForm = new ListarProductosForm();
 
             //Escuchar solicitud interna de navegación a Agregar Artículo
             listarArticulosForm.SolicitarCambioAgregarProductosForm += AgregarProductosHandler;
@@ -146,12 +148,29 @@ namespace Parcial2 {
 
         //Indice 1: agregar artículo
         case 1: {
-            var listarCategoriasForm = new ListarCategoriasForm();
+            ListarCategoriasForm listarCategoriasForm = new ListarCategoriasForm();
 
             listarCategoriasForm.SolicitarCambioAgregarCategoriasForm += AgregarCategoriasHandler;
             listarCategoriasForm.SolicitarCambioEditarCategoriasForm += EditarCategoriasHandler;
 
             formARenderizar = listarCategoriasForm;
+            break;
+          }
+
+
+        case 2: {
+            //NO hay subsecciones, sólo se renderiza la lista y no hay que suscribirse a ningún subevento
+            ListarOrdenesForm listarOrdenesForm = new ListarOrdenesForm();
+            formARenderizar = listarOrdenesForm;
+
+            break;
+          }
+
+        case 3: {
+            //NO hay subsecciones, sólo se renderiza la lista y no hay que suscribirse a ningún subevento
+            ListarFacturasForm listarOrdenesForm = new ListarFacturasForm();
+            formARenderizar = listarOrdenesForm;
+
             break;
           }
 

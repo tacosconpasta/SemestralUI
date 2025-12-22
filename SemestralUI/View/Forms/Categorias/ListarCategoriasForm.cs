@@ -29,42 +29,66 @@ namespace SemestralUI.View.Forms.Categorias {
     //Cargar y renderizar categorías
     private async Task CargarCategoriasAsync() {
       try {
-        //Limpiar lista previa
+        // Limpiar lista previa
         categoriasListContainer.Controls.Clear();
+
+        // Encabezado
+        var encabezado = new CategoriaRenderControl();
+        //Header de nombre
+        encabezado.lblNombre.Text = "Nombre";
+        //Header de descripción
+        encabezado.lblPadre.Text = "Categoría Padre";
+
+        //Ocultar botones
+        encabezado.btnEditar.Visible = false; 
+        encabezado.btnEliminar.Visible = false;
+
+        //Margen Encabezado
+        encabezado.Margin = new Padding(0, 10, 0, 0);
+
+        //Bold
+        encabezado.lblNombre.Font = new Font(encabezado.lblNombre.Font, FontStyle.Bold);
+        encabezado.lblPadre.Font = new Font(encabezado.lblPadre.Font, FontStyle.Bold);
+
+        categoriasListContainer.Controls.Add(encabezado);
 
         //Obtener categorías
         var response = await _http.GetAsync($"{API_BASE}/categorias");
         response.EnsureSuccessStatusCode();
 
-        //Leer JSON
         string json = await response.Content.ReadAsStringAsync();
-
-        //Deserializar
         var categorias = JsonSerializer.Deserialize<List<Categoria>>(
-          json,
-          new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
         );
-
         if (categorias == null) return;
 
-        //Espaciado vertical entre controles
-        int yOffset = 0;
+        // Crear un diccionario de categorías por Id para no hacer múltiples requests
+        var categoriasPorId = new Dictionary<int, Categoria>();
+        foreach (var cat in categorias) {
+          categoriasPorId[cat.Id] = cat;
+        }
 
-        //Renderizar cada categoría
+        int yOffset = encabezado.Height + 10;
+
+        // Renderizar cada categoría
         foreach (var categoria in categorias) {
-
           var control = new CategoriaRenderControl(categoria) {
             AutoSize = true,
             Location = new Point(0, yOffset)
           };
 
-          //Eventos del control
+          // Determinar categoría padre
+          control.lblPadre.Text = (categoria.CategoriaPadreId.HasValue && categoria.CategoriaPadreId.Value != 0 && categoriasPorId.ContainsKey(categoria.CategoriaPadreId.Value))
+              ? categoriasPorId[categoria.CategoriaPadreId.Value].Nombre
+              : "—";
+
+          // Eventos del control
           control.EditarClick += CategoriaEditar;
           control.EliminarClick += CategoriaEliminar;
 
           categoriasListContainer.Controls.Add(control);
 
-          //Espaciado vertical
           yOffset += control.Height + 10;
         }
       } catch (Exception ex) {
@@ -83,7 +107,6 @@ namespace SemestralUI.View.Forms.Categorias {
     }
 
     private async void CategoriaEliminar(object? sender, int categoriaId) {
-      //Pregunta de confirmación
       var resultado = MessageBox.Show(
         "¿Estás seguro que deseas eliminar esta categoría?",
         "Confirmar eliminación",
@@ -91,25 +114,20 @@ namespace SemestralUI.View.Forms.Categorias {
         MessageBoxIcon.Warning
       );
 
-      //Si usuario cancela, salir
-      if (resultado != DialogResult.Yes)
-        return;
+      if (resultado != DialogResult.Yes) return;
 
       try {
-        //Llamada al endpoint DELETE /api/categorias/{id}
         var response = await _http.DeleteAsync($"{API_BASE}/categorias/{categoriaId}");
 
-        //Validar respuesta
         if (!response.IsSuccessStatusCode) {
           string mensajeError = await response.Content.ReadAsStringAsync();
           MessageBox.Show($"No se pudo eliminar la categoría.\n{mensajeError}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
           return;
         }
 
-        //Mensaje de éxito
         MessageBox.Show("Categoría eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        //Recargar categorías para refrescar UI
+        // Recargar categorías
         _ = CargarCategoriasAsync();
 
       } catch (Exception ex) {

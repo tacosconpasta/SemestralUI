@@ -155,12 +155,12 @@
 
     #endregion
 
-    private TableLayoutPanel layoutArticulo;
-    private Label lblNombre;
-    private Label lblCategorias;
-    private Label lblPrecio;
-    private TableLayoutPanel tableLayoutPanel1;
-    private Button btnEditar;
-    private Button btnEliminar;
+    public TableLayoutPanel layoutArticulo;
+    public Label lblNombre;
+    public Label lblCategorias;
+    public Label lblPrecio;
+    public TableLayoutPanel tableLayoutPanel1;
+    public Button btnEditar;
+    public Button btnEliminar;
   }
 }

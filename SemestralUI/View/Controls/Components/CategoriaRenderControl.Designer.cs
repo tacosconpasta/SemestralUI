@@ -130,11 +130,11 @@
 
     #endregion
 
-    private TableLayoutPanel layoutCategoria;
-    private Label lblNombre;
-    private Label lblPadre;
-    private TableLayoutPanel tableLayoutPanel1;
-    private Button btnEditar;
-    private Button btnEliminar;
+    public TableLayoutPanel layoutCategoria;
+    public Label lblNombre;
+    public Label lblPadre;
+    public TableLayoutPanel tableLayoutPanel1;
+    public Button btnEditar;
+    public Button btnEliminar;
   }
 }
