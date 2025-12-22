@@ -16,7 +16,7 @@ namespace SemestralUI.View.Forms {
 
     //Eventos para cambiar de pantalla
     public event EventHandler<NavegacionEventArgs>? SolicitarCambioAgregarProductosForm;
-    public event EventHandler<NavegacionEventArgs>? SolicitarCambioEditarProductosForm;
+    public event EventHandler<IdentificadorEventArgs>? SolicitarCambioEditarProductosForm;
 
 
     public ListarProductosForm() {
@@ -110,11 +110,42 @@ namespace SemestralUI.View.Forms {
 
     //Eventos del control
     private void ArticuloEditar(object? sender, int articuloId) {
-      MessageBox.Show($"Editar artículo {articuloId}");
+      SolicitarCambioEditarProductosForm?.Invoke(this, new IdentificadorEventArgs(articuloId));
     }
 
-    private void ArticuloEliminar(object? sender, int articuloId) {
-      MessageBox.Show($"Eliminar artículo {articuloId}");
+    private async void ArticuloEliminar(object? sender, int articuloId) {
+      //Pregunta de confirmación
+      var resultado = MessageBox.Show(
+        "¿Estás seguro que deseas eliminar este artículo?",
+        "Confirmar eliminación",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Warning
+      );
+
+      //Si usuario cancela, salir
+      if (resultado != DialogResult.Yes)
+        return;
+
+      try {
+        //Llamada al endpoint DELETE /api/articulos/{id}
+        var response = await _http.DeleteAsync($"{API_BASE}/articulos/{articuloId}");
+
+        //Validar respuesta
+        if (!response.IsSuccessStatusCode) {
+          string mensajeError = await response.Content.ReadAsStringAsync();
+          MessageBox.Show($"No se pudo eliminar el artículo.\n{mensajeError}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          return;
+        }
+
+        //Mostrar mensaje de éxito
+        MessageBox.Show("Artículo eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        //Volver a cargar los artículos para refrescar UI
+        _ = CargarArticulosAsync();
+
+      } catch (Exception ex) {
+        MessageBox.Show($"Error inesperado al eliminar artículo:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
     }
 
     private void btnAgregarArticulos_Click(object sender, EventArgs e) {

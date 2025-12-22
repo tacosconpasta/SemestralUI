@@ -95,6 +95,33 @@ namespace Parcial2 {
       form.SolicitarCambioListarProductosForm += NavegacionHandler;
     }
 
+    private void EditarProductosHandler(object? sender, IdentificadorEventArgs e) {
+      //Renderizar AgregarProductos, obtiendo Id de Artículo a editar del evento
+      EditarProductosForm form = new EditarProductosForm(e.Id);
+      RenderizarForm(form);
+
+      //Escuchar botón volver a ListarProductos
+      form.SolicitarCambioListarProductosForm += NavegacionHandler;
+    }
+
+    private void AgregarCategoriasHandler(object? sender, NavegacionEventArgs e) {
+      //Renderizar AgregarCategorias, obtiendo Id de Categoria a editar del evento
+      AgregarCategoriasForm form = new AgregarCategoriasForm();
+      RenderizarForm(form);
+
+      //Escuchar botón volver a ListarProductos
+      form.SolicitarCambioListarCategoriasForm += NavegacionHandler;
+    }
+
+    private void EditarCategoriasHandler(object? sender, IdentificadorEventArgs e) {
+      //Renderizar CategoriaProductos, obtiendo Id de Categoria a editar del evento
+      EditarCategoriasForm form = new EditarCategoriasForm(e.Id);
+      RenderizarForm(form);
+
+      //Escuchar botón volver a ListarCategoria
+      form.SolicitarCambioListarCategoriasForm += NavegacionHandler;
+    }
+
     private void NavegarA(int indice) {
 
       //Guardar indice actual de navegación
@@ -111,6 +138,7 @@ namespace Parcial2 {
 
             //Escuchar solicitud interna de navegación a Agregar Artículo
             listarArticulosForm.SolicitarCambioAgregarProductosForm += AgregarProductosHandler;
+            listarArticulosForm.SolicitarCambioEditarProductosForm += EditarProductosHandler;
 
             formARenderizar = listarArticulosForm;
             break;
@@ -119,6 +147,10 @@ namespace Parcial2 {
         //Indice 1: agregar artículo
         case 1: {
             var listarCategoriasForm = new ListarCategoriasForm();
+
+            listarCategoriasForm.SolicitarCambioAgregarCategoriasForm += AgregarCategoriasHandler;
+            listarCategoriasForm.SolicitarCambioEditarCategoriasForm += EditarCategoriasHandler;
+
             formARenderizar = listarCategoriasForm;
             break;
           }
