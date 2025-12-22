@@ -36,17 +36,19 @@ namespace Parcial2
       // 
       renderPanel.Dock = DockStyle.Fill;
       renderPanel.Location = new Point(0, 0);
+      renderPanel.Margin = new Padding(2, 2, 2, 2);
       renderPanel.Name = "renderPanel";
-      renderPanel.Size = new Size(1058, 664);
+      renderPanel.Size = new Size(1082, 673);
       renderPanel.TabIndex = 0;
       // 
       // MainForm
       // 
-      AutoScaleDimensions = new SizeF(10F, 25F);
+      AutoScaleDimensions = new SizeF(8F, 20F);
       AutoScaleMode = AutoScaleMode.Font;
       BackColor = SystemColors.ControlLightLight;
-      ClientSize = new Size(1058, 664);
+      ClientSize = new Size(1082, 673);
       Controls.Add(renderPanel);
+      Margin = new Padding(2, 2, 2, 2);
       Name = "MainForm";
       Text = "SysTransac";
       Load += MainForm_Load;

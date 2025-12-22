@@ -27,9 +27,10 @@
       // 
       // RealizarTransaccion
       // 
-      AutoScaleDimensions = new SizeF(10F, 25F);
+      AutoScaleDimensions = new SizeF(8F, 20F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(1058, 664);
+      ClientSize = new Size(1082, 673);
+      Margin = new Padding(2, 2, 2, 2);
       Name = "RealizarTransaccion";
       Text = "RealizarTransaccion";
       ResumeLayout(false);

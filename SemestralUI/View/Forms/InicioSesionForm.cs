@@ -82,14 +82,24 @@ namespace SemestralUI.Forms {
 
         //Si la respuesta es exitosa
         if (response.IsSuccessStatusCode) {
-          //Leer respuesta (es un string JSON)
+          //Leer respuesta (JSON)
           string jsonRespuesta = await response.Content.ReadAsStringAsync();
 
-          //Deserializar string JSON interno
-          string jsonUsuario = JsonSerializer.Deserialize<string>(jsonRespuesta)!;
+          //JSON a sesion
+          Sesion sesion = JsonSerializer.Deserialize<Sesion>(
+            jsonRespuesta,
+            new JsonSerializerOptions {
+              PropertyNameCaseInsensitive = true
+            }
+           )!;
 
-          //Deserializar usuario final
-          Usuario usuario = JsonSerializer.Deserialize<Usuario>(jsonUsuario)!;
+          Console.WriteLine(sesion.usuario.User);
+          Console.WriteLine(sesion.cliente?.Nombre);
+
+          if (sesion.usuario.Rol != "admin") {
+            MessageBox.Show("Su tipo de usuario no tiene acceso a esta interfaz. Contacte a un administrador.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+          }
 
           //Cambiar pantalla y enviar usuario a Main
           MessageBox.Show(
@@ -99,7 +109,7 @@ namespace SemestralUI.Forms {
               MessageBoxIcon.Information
           );
 
-          SolicitarCambio!.Invoke(sender, new UsuarioEventArgs(usuario));
+          SolicitarCambio!.Invoke(sender, new UsuarioEventArgs(sesion.usuario));
           return;
         }
 
@@ -126,5 +136,8 @@ namespace SemestralUI.Forms {
       btnIniciar.Text = "Iniciar Sesión";
     }
 
+    private void txtCorreo_TextChanged(object sender, EventArgs e) {
+
+    }
   }
 }

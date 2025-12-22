@@ -11,6 +11,7 @@ namespace Parcial2 {
 
     public MainForm() {
       InitializeComponent();
+      indiceCuentaSeleccionada = 0;
     }
 
     public void MainForm_Load(object sender, EventArgs e) {
@@ -57,9 +58,11 @@ namespace Parcial2 {
       //Obtener objeto de usuario desde evento el evento
       usuario = e.User;
 
-      MenuInicioForm menuInicioForm = new MenuInicioForm(usuario);
+      ListarProductosForm menuInicioForm = new ListarProductosForm();
       RenderizarForm(menuInicioForm);
-      menuInicioForm.SolicitarCambio += MenuInicioHandler;
+
+      //Subscribirse a evento de Menu de Inicio
+      //<!--AQUÍ-->
     }
   }
 }

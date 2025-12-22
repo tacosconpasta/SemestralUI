@@ -29,8 +29,6 @@
       lblTitulo = new Label();
       txtContra = new TextBox();
       txtCorreo = new TextBox();
-      picLogo = new PictureBox();
-      ((System.ComponentModel.ISupportInitialize) picLogo).BeginInit();
       SuspendLayout();
       // 
       // btnIniciar
@@ -38,9 +36,10 @@
       btnIniciar.BackColor = SystemColors.ActiveCaptionText;
       btnIniciar.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point,  0);
       btnIniciar.ForeColor = SystemColors.ControlLightLight;
-      btnIniciar.Location = new Point(20, 403);
+      btnIniciar.Location = new Point(385, 488);
+      btnIniciar.Margin = new Padding(2, 2, 2, 2);
       btnIniciar.Name = "btnIniciar";
-      btnIniciar.Size = new Size(357, 74);
+      btnIniciar.Size = new Size(286, 59);
       btnIniciar.TabIndex = 10;
       btnIniciar.Text = "Iniciar Sesión";
       btnIniciar.UseVisualStyleBackColor = false;
@@ -50,9 +49,10 @@
       // 
       lblContra.AutoSize = true;
       lblContra.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-      lblContra.Location = new Point(20, 261);
+      lblContra.Location = new Point(385, 325);
+      lblContra.Margin = new Padding(2, 0, 2, 0);
       lblContra.Name = "lblContra";
-      lblContra.Size = new Size(138, 32);
+      lblContra.Size = new Size(114, 28);
       lblContra.TabIndex = 6;
       lblContra.Text = "Contraseña";
       // 
@@ -60,19 +60,21 @@
       // 
       lblUsuario.AutoSize = true;
       lblUsuario.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-      lblUsuario.Location = new Point(20, 142);
+      lblUsuario.Location = new Point(385, 225);
+      lblUsuario.Margin = new Padding(2, 0, 2, 0);
       lblUsuario.Name = "lblUsuario";
-      lblUsuario.Size = new Size(214, 32);
+      lblUsuario.Size = new Size(191, 28);
       lblUsuario.TabIndex = 7;
-      lblUsuario.Text = "Correo Electrónico";
+      lblUsuario.Text = "Nombre de Usuario";
       // 
       // lblTitulo
       // 
       lblTitulo.AutoSize = true;
       lblTitulo.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
-      lblTitulo.Location = new Point(64, 41);
+      lblTitulo.Location = new Point(420, 104);
+      lblTitulo.Margin = new Padding(2, 0, 2, 0);
       lblTitulo.Name = "lblTitulo";
-      lblTitulo.Size = new Size(258, 54);
+      lblTitulo.Size = new Size(222, 46);
       lblTitulo.TabIndex = 8;
       lblTitulo.Text = "Inicia Sesión!";
       // 
@@ -80,47 +82,40 @@
       // 
       txtContra.BackColor = SystemColors.Control;
       txtContra.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point,  0);
-      txtContra.Location = new Point(20, 307);
+      txtContra.Location = new Point(385, 362);
+      txtContra.Margin = new Padding(2, 2, 2, 2);
       txtContra.MaxLength = 25;
       txtContra.Name = "txtContra";
-      txtContra.Size = new Size(357, 39);
+      txtContra.Size = new Size(286, 34);
       txtContra.TabIndex = 9;
       // 
       // txtCorreo
       // 
       txtCorreo.BackColor = SystemColors.Control;
       txtCorreo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point,  0);
-      txtCorreo.Location = new Point(20, 188);
+      txtCorreo.Location = new Point(385, 262);
+      txtCorreo.Margin = new Padding(2, 2, 2, 2);
       txtCorreo.MaxLength = 25;
       txtCorreo.Name = "txtCorreo";
-      txtCorreo.Size = new Size(357, 39);
+      txtCorreo.Size = new Size(286, 34);
       txtCorreo.TabIndex = 5;
-      // 
-      // picLogo
-      // 
-      picLogo.Location = new Point(419, 12);
-      picLogo.Name = "picLogo";
-      picLogo.Size = new Size(387, 514);
-      picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-      picLogo.TabIndex = 4;
-      picLogo.TabStop = false;
+      txtCorreo.TextChanged += txtCorreo_TextChanged;
       // 
       // InicioSesionForm
       // 
-      AutoScaleDimensions = new SizeF(10F, 25F);
+      AutoScaleDimensions = new SizeF(8F, 20F);
       AutoScaleMode = AutoScaleMode.Font;
       BackColor = SystemColors.ControlLightLight;
-      ClientSize = new Size(826, 538);
+      ClientSize = new Size(1082, 673);
       Controls.Add(btnIniciar);
       Controls.Add(lblContra);
       Controls.Add(lblUsuario);
       Controls.Add(lblTitulo);
       Controls.Add(txtContra);
       Controls.Add(txtCorreo);
-      Controls.Add(picLogo);
+      Margin = new Padding(2, 2, 2, 2);
       Name = "InicioSesionForm";
       Text = "InicioSesion";
-      ((System.ComponentModel.ISupportInitialize) picLogo).EndInit();
       ResumeLayout(false);
       PerformLayout();
     }
@@ -133,6 +128,5 @@
     private Label lblTitulo;
     private TextBox txtContra;
     private TextBox txtCorreo;
-    private PictureBox picLogo;
   }
 }
