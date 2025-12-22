@@ -1,42 +1,49 @@
-﻿using System;
+﻿using SemestralUI.Models;
+using SemestralUI.Models.Events;
+using SemestralUI.View.Controls.Components;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SemestralUI.Models;
-using SemestralUI.View.Controls.Components;
 
 namespace SemestralUI.View.Forms {
-  public partial class MenuInicioForm : Form {
-
+  public partial class ListarProductosForm : Form {
+    //Constantes
     private const string API_BASE = "http://srv595743.hstgr.cloud:5000/api";
     private readonly HttpClient _http = new HttpClient();
 
-    public MenuInicioForm() {
+    //Eventos para cambiar de pantalla
+    public event EventHandler<NavegacionEventArgs>? SolicitarCambioAgregarProductosForm;
+    public event EventHandler<NavegacionEventArgs>? SolicitarCambioEditarProductosForm;
+
+
+    public ListarProductosForm() {
       InitializeComponent();
 
-      // Cargar artículos al iniciar
+      //Cargar artículos al iniciar
       _ = CargarArticulosAsync();
     }
 
-    // =========================
-    // Cargar y renderizar artículos
-    // =========================
+    //Cargar y renderizar artículos
     private async Task CargarArticulosAsync() {
       try {
-        // Limpiar render previo
+        //Limpiar artículos de render previo
         articulosListContainer.Controls.Clear();
 
-        // Obtener artículos
+        //Obtener artículos
         var response = await _http.GetAsync($"{API_BASE}/articulos");
         response.EnsureSuccessStatusCode();
 
+        //Leer la petición como cadena
         string json = await response.Content.ReadAsStringAsync();
 
+        //parsearJson
         var root = JsonDocument.Parse(json);
         var articulosJson = root.RootElement.GetProperty("articulos");
 
+        //Deserealizar
         var articulos = JsonSerializer.Deserialize<List<Articulo>>(
           articulosJson.GetRawText(),
           new JsonSerializerOptions {
@@ -46,9 +53,10 @@ namespace SemestralUI.View.Forms {
 
         if (articulos == null) return;
 
+        //Espaciado vertical entre artículos renderizados
         int yOffset = 0;
 
-        // Renderizar cada artículo
+        //Renderizar cada artículo
         foreach (var articulo in articulos) {
 
           var categorias = await ObtenerCategoriasArticuloAsync(articulo.Id);
@@ -64,7 +72,7 @@ namespace SemestralUI.View.Forms {
 
           articulosListContainer.Controls.Add(control);
 
-          // Espaciado vertical
+          //Espaciado vertical
           yOffset += control.Height + 10;
         }
       } catch (Exception ex) {
@@ -77,9 +85,7 @@ namespace SemestralUI.View.Forms {
       }
     }
 
-    // =========================
-    // Obtener categorías por artículo
-    // =========================
+    //Obtener categorías por artículo
     private async Task<List<Categoria>> ObtenerCategoriasArticuloAsync(int articuloId) {
       try {
         var response = await _http.GetAsync(
@@ -102,15 +108,17 @@ namespace SemestralUI.View.Forms {
       }
     }
 
-    // =========================
-    // Eventos del control
-    // =========================
+    //Eventos del control
     private void ArticuloEditar(object? sender, int articuloId) {
       MessageBox.Show($"Editar artículo {articuloId}");
     }
 
     private void ArticuloEliminar(object? sender, int articuloId) {
       MessageBox.Show($"Eliminar artículo {articuloId}");
+    }
+
+    private void btnAgregarArticulos_Click(object sender, EventArgs e) {
+      SolicitarCambioAgregarProductosForm?.Invoke(this, new NavegacionEventArgs(0));
     }
   }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SemestralUI.Models.Events;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace SemestralUI.View.Controls {
   public partial class NavbarControl : UserControl {
 
     private List<Label> _items;
+    public event EventHandler<NavegacionEventArgs>? NavegacionSolicitada;
+
 
     //Indice seleccionado para marcar en negritas
     private int _selectedIndex = -1;
@@ -19,6 +22,11 @@ namespace SemestralUI.View.Controls {
     public NavbarControl() {
       InitializeComponent();
       InicializarNavbar();
+
+      lblArtículos.Click += (_, __) => EmitirNavegacion(0);
+      lblCategorias.Click += (_, __) => EmitirNavegacion(1);
+      lblOrdenes.Click += (_, __) => EmitirNavegacion(2);
+      lblTransacciones.Click += (_, __) => EmitirNavegacion(3);
     }
 
     private void InicializarNavbar() {
@@ -61,6 +69,13 @@ namespace SemestralUI.View.Controls {
           ? Color.White
           : Color.Gray;
       }
+    }
+
+    private void EmitirNavegacion(int indice) {
+      NavegacionSolicitada?.Invoke(
+        this,
+        new NavegacionEventArgs(indice)
+      );
     }
   }
 }

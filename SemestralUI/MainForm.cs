@@ -1,68 +1,137 @@
 using SemestralUI.Forms;
 using SemestralUI.Models;
 using SemestralUI.Models.Events;
+using SemestralUI.View.Controls;
 using SemestralUI.View.Forms;
+using SemestralUI.View.Forms.Categorias;
+using SemestralUI.View.Forms.Productos;
 
 namespace Parcial2 {
   public partial class MainForm : Form {
+
+    //Usuario autenticado actualmente
     Usuario? usuario;
-    //Indica indice de la cuenta seleccionada, actualmente, por usuario
-    int indiceCuentaSeleccionada;
+
+    //Indice de navegación seleccionado
+    int indiceNavegacion;
 
     public MainForm() {
       InitializeComponent();
-      indiceCuentaSeleccionada = 0;
+      indiceNavegacion = 0;
     }
 
     public void MainForm_Load(object sender, EventArgs e) {
-      InicioSesionForm inicioSesionForm = new InicioSesionForm();
-      RenderizarForm(inicioSesionForm);
 
-      //Linkear el atributo "Event SolicitarCambio" para que, cuando se triggere con un botón
-      //dentro de inicioSesionForm... se ejecute la función Handler en ESTA CLASE (MainForm/Renderizador).
+      //Instanciar formulario de inicio de sesión
+      InicioSesionForm inicioSesionForm = new InicioSesionForm();
+
+      //Suscribirse al evento que notifica login exitoso
       inicioSesionForm.SolicitarCambio += InicioSesionHandler!;
+
+      //Renderizar login como primera vista
+      RenderizarForm(inicioSesionForm);
     }
 
-    //Renderiza formARenderizar en pantalla
     private void RenderizarForm(Form formARenderizar) {
 
-      //Permite que la Form a renderizar llene el panel
+      //Permitir que el formulario ocupe todo el panel
       formARenderizar.Dock = DockStyle.Fill;
 
-      //No renderizar Form como una ventana top-level
+      //Evitar que se comporte como ventana independiente
       formARenderizar.TopLevel = false;
 
-      //No renderizar bordes de ventana
+      //Eliminar bordes del formulario renderizado
       formARenderizar.FormBorderStyle = FormBorderStyle.None;
 
-      //Cerrar Form anterior, si existe
+      //Si ya hay formularios renderizados
       if (renderPanel.Controls.Count > 0) {
+
+        //Cerrar cada formulario existente antes de reemplazarlo
         foreach (Form form in renderPanel.Controls) {
-          //Cerrar forms
           form.Close();
         }
 
-        //Limpiar referencias de forms instanciados, o otros controles, dentro de renderPanel
+        //Eliminar referencias de controles antiguos
         renderPanel.Controls.Clear();
       }
 
-      //Añadir form a renderizar
+      //Añadir nuevo formulario al panel
       renderPanel.Controls.Add(formARenderizar);
 
-      //Mostrar form
+      //Mostrar formulario renderizado
       formARenderizar.Show();
     }
 
-    //Al hacer click en "Iniciar Sesión", en InicioSesionForm, renderizar Menú Inicial  
     private void InicioSesionHandler(object sender, UsuarioEventArgs e) {
-      //Obtener objeto de usuario desde evento el evento
+
+      //Guardar usuario autenticado recibido desde el login
       usuario = e.User;
 
-      ListarProductosForm menuInicioForm = new ListarProductosForm();
-      RenderizarForm(menuInicioForm);
+      //Activar barra de navegación
+      navbarPanel.Visible = true;
 
-      //Subscribirse a evento de Menu de Inicio
-      //<!--AQUÍ-->
+      //Escuchar eventos de navegación emitidos por la barra
+      navbarPanel.NavegacionSolicitada += NavegacionHandler!;
+
+      //Anclar barra en la parte superior
+      navbarPanel.Dock = DockStyle.Top;
+
+      //Renderizar vista inicial luego del login
+      NavegarA(0);
+    }
+
+    private void NavegacionHandler(object sender, NavegacionEventArgs e) {
+
+      //Actualizar indice de navegación solicitado por la barra
+      NavegarA(e.Indice);
+    }
+
+    private void AgregarProductosHandler(object? sender, EventArgs e) {
+      //Renderizar AgregarProductos
+      AgregarProductosForm form = new AgregarProductosForm();
+      RenderizarForm(form);
+
+      //Escuchar botón volver a ListarProductos
+      form.SolicitarCambioListarProductosForm += NavegacionHandler;
+    }
+
+    private void NavegarA(int indice) {
+
+      //Guardar indice actual de navegación
+      indiceNavegacion = indice;
+
+      //Formulario a renderizar
+      Form formARenderizar;
+
+      switch (indiceNavegacion) {
+
+        //Indice 0: listado de productos
+        case 0: {
+            var listarArticulosForm = new ListarProductosForm();
+
+            //Escuchar solicitud interna de navegación a Agregar Artículo
+            listarArticulosForm.SolicitarCambioAgregarProductosForm += AgregarProductosHandler;
+
+            formARenderizar = listarArticulosForm;
+            break;
+          }
+
+        //Indice 1: agregar artículo
+        case 1: {
+            var listarCategoriasForm = new ListarCategoriasForm();
+            formARenderizar = listarCategoriasForm;
+            break;
+          }
+
+        //Indices reservados
+        default: {
+            formARenderizar = new ListarProductosForm();
+            break;
+          }
+      }
+
+      //Renderizar formulario resultante
+      RenderizarForm(formARenderizar);
     }
   }
 }

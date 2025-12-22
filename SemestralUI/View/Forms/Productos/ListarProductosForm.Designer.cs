@@ -1,5 +1,5 @@
 ﻿namespace SemestralUI.View.Forms {
-  partial class MenuInicioForm {
+  partial class ListarProductosForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -23,7 +23,6 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      navbarControl1 = new SemestralUI.View.Controls.NavbarControl();
       mainContainer = new Panel();
       articulosListContainer = new FlowLayoutPanel();
       panelTop = new Panel();
@@ -33,28 +32,16 @@
       panelTop.SuspendLayout();
       SuspendLayout();
       // 
-      // navbarControl1
-      // 
-      navbarControl1.AutoSize = true;
-      navbarControl1.BackColor = SystemColors.ControlLightLight;
-      navbarControl1.Dock = DockStyle.Top;
-      navbarControl1.Location = new Point(0, 0);
-      navbarControl1.Margin = new Padding(0);
-      navbarControl1.Name = "navbarControl1";
-      navbarControl1.SelectedIndex = -1;
-      navbarControl1.Size = new Size(1082, 70);
-      navbarControl1.TabIndex = 0;
-      // 
       // mainContainer
       // 
       mainContainer.AutoSize = true;
       mainContainer.Controls.Add(articulosListContainer);
       mainContainer.Controls.Add(panelTop);
       mainContainer.Dock = DockStyle.Fill;
-      mainContainer.Location = new Point(0, 70);
+      mainContainer.Location = new Point(0, 0);
       mainContainer.Name = "mainContainer";
       mainContainer.Padding = new Padding(40, 40, 20, 40);
-      mainContainer.Size = new Size(1082, 603);
+      mainContainer.Size = new Size(1082, 673);
       mainContainer.TabIndex = 1;
       // 
       // articulosListContainer
@@ -66,7 +53,7 @@
       articulosListContainer.Location = new Point(40, 88);
       articulosListContainer.Margin = new Padding(0);
       articulosListContainer.Name = "articulosListContainer";
-      articulosListContainer.Size = new Size(1022, 475);
+      articulosListContainer.Size = new Size(1022, 545);
       articulosListContainer.TabIndex = 2;
       articulosListContainer.WrapContents = false;
       // 
@@ -97,6 +84,7 @@
       btnAgregarArticulos.TabIndex = 1;
       btnAgregarArticulos.Text = "Agregar Artículos";
       btnAgregarArticulos.UseVisualStyleBackColor = false;
+      btnAgregarArticulos.Click += btnAgregarArticulos_Click;
       // 
       // lblArticulosTitulo
       // 
@@ -108,16 +96,15 @@
       lblArticulosTitulo.TabIndex = 0;
       lblArticulosTitulo.Text = "Artículos";
       // 
-      // MenuInicioForm
+      // ListarProductosForm
       // 
       AutoScaleDimensions = new SizeF(8F, 20F);
       AutoScaleMode = AutoScaleMode.Font;
       BackColor = SystemColors.ControlLightLight;
       ClientSize = new Size(1082, 673);
       Controls.Add(mainContainer);
-      Controls.Add(navbarControl1);
       Margin = new Padding(2);
-      Name = "MenuInicioForm";
+      Name = "ListarProductosForm";
       Text = "MenuInicioSesionForm";
       mainContainer.ResumeLayout(false);
       mainContainer.PerformLayout();
@@ -128,8 +115,6 @@
     }
 
     #endregion
-
-    private Controls.NavbarControl navbarControl1;
     private Panel mainContainer;
     private Label lblArticulosTitulo;
     private Panel panelTop;
